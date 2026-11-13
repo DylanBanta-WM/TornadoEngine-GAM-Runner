@@ -1,0 +1,27 @@
+{
+    "name": "tornado-engine/gam-runner",
+    "description": "Tornado Engine module: run GAM commands from the website.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "illuminate/support": "^13.0",
+        "tornado-engine/gam": ">=0.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "TornadoEngine\\GamRunner\\": "src/"
+        }
+    },
+    "extra": {
+        "tornado": {
+            "name": "GAM Runner",
+            "core": ">=0.7",
+            "core-module": false,
+            "provider": "TornadoEngine\\GamRunner\\GamRunnerServiceProvider"
+        },
+        "branch-alias": {
+            "dev-main": "0.1.x-dev"
+        }
+    }
+}
