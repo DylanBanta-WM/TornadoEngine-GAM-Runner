@@ -27,6 +27,11 @@ class GamRunnerServiceProvider extends ServiceProvider
         $this->callAfterResolving(Nav::class, function (Nav $nav) {
             $nav->add(__('GAM Runner'), 'gam-runner.index', active: 'gam-runner.*', order: 500,
                 visible: fn ($user) => $user && Gate::forUser($user)->any(['gam-runner.read', 'gam-runner.all']));
+            if (method_exists($nav, 'tool')) {
+                $nav->tool(__('GAM Runner'), 'gam-runner.index', __('Run GAM commands against your Google Workspace.'),
+                    section: __('Google'), icon: 'terminal', color: 'green',
+                    visible: fn ($user) => $user && Gate::forUser($user)->any(['gam-runner.read', 'gam-runner.all']));
+            }
         });
     }
 }

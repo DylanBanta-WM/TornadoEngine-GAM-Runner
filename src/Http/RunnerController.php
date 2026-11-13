@@ -65,7 +65,6 @@ class RunnerController extends Controller
             'command' => $command,
             'result' => $result,
             'error' => $error,
-            'readOnly' => Gate::denies('gam-runner.all'),
             'history' => Run::where('user_id', $request->user()->id)->latest('id')->take(10)->get(),
         ]);
     }

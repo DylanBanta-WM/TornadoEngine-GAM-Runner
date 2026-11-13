@@ -14,9 +14,6 @@
                            placeholder="info user name@example.org"
                            class="block w-full min-w-0 rounded-e-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 font-mono text-base focus:border-indigo-500 focus:ring-indigo-500">
                 </div>
-                <p class="mt-1 text-gray-600 dark:text-gray-400">
-                    {{ $readOnly ? __('You can run commands that read: info, print, show and report.') : __('Any GAM command. Commands that change Google happen right away, with no undo.') }}
-                </p>
             </div>
             <div class="flex justify-end">
                 <x-primary-button>{{ __('Run') }}</x-primary-button>
