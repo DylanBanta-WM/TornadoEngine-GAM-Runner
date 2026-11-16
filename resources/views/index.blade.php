@@ -3,6 +3,16 @@
 @endphp
 
 <x-admin-layout :title="__('GAM Runner')">
+    @unless ($gamReady)
+        <div class="rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 px-4 py-3 text-sm text-amber-900 dark:text-amber-200">
+            <p>{{ __('GAM is required for GAM Runner to work, and it isn\'t set up yet.') }}
+                @can('administration')
+                    <a href="{{ url('/administration/gam') }}" class="font-medium underline">{{ __('Set up GAM') }}</a>
+                @endcan
+            </p>
+        </div>
+    @endunless
+
     <x-settings-card :title="__('Run a GAM command')">
         <form method="POST" action="{{ route('gam-runner.run') }}" class="space-y-3" x-data="{ command: @js($command) }">
             @csrf

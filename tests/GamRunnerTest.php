@@ -63,7 +63,7 @@ class GamRunnerTest extends TestCase
             ->assertSee('Download CSV')
             ->assertSee('Getting all Users');
 
-        Http::assertSent(fn ($request) => $request['args'] === ['print', 'users', 'fields', 'primaryemail,fullname']);
+        Http::assertSent(fn ($request) => ($request->data()['args'] ?? null) === ['print', 'users', 'fields', 'primaryemail,fullname']);
         $run = Run::sole();
         $this->assertSame(['print users fields primaryemail,fullname', 0, $user->id], [$run->command, $run->exit, $run->user_id]);
         $this->actingAs($user)->get('/gam-runner')->assertSee('Your recent commands');
@@ -74,10 +74,10 @@ class GamRunnerTest extends TestCase
         $this->actingAs($this->withRole('gam-runner.read'))->post('/gam-runner', ['command' => 'delete user ann@school.test'])
             ->assertOk()
             ->assertSee('You can only run commands that read');
-        Http::assertNothingSent();
+        Http::assertNotSent(fn ($request) => str_ends_with($request->url(), '/run'));
 
         $this->actingAs($this->withRole('gam-runner.all'))->post('/gam-runner', ['command' => 'update user ann@school.test suspended on'])->assertOk();
-        Http::assertSent(fn ($request) => $request['args'] === ['update', 'user', 'ann@school.test', 'suspended', 'on']);
+        Http::assertSent(fn ($request) => ($request->data()['args'] ?? null) === ['update', 'user', 'ann@school.test', 'suspended', 'on']);
     }
 
     public function test_gam_errors_are_shown(): void
@@ -95,5 +95,14 @@ class GamRunnerTest extends TestCase
         $this->actingAs(User::factory()->create())->post('/gam-runner', ['command' => 'info domain'])->assertForbidden();
         $this->actingAs(User::factory()->create())->get('/dashboard')->assertDontSee('GAM Runner');
         $this->actingAs($this->withRole('gam-runner.read'))->get('/dashboard')->assertSee('GAM Runner');
+    }
+
+    public function test_it_says_when_gam_isnt_set_up(): void
+    {
+        $user = $this->withRole('gam-runner.read');
+        $this->actingAs($user)->get('/gam-runner')->assertSee('GAM is required for GAM Runner to work, and it isn', false);
+
+        Http::fake(['gam:8000/status' => Http::response(['configured' => true])]);
+        $this->actingAs($user)->get('/gam-runner')->assertDontSee('GAM is required for GAM Runner');
     }
 }

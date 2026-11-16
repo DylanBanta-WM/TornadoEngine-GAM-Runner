@@ -66,7 +66,17 @@ class RunnerController extends Controller
             'result' => $result,
             'error' => $error,
             'history' => Run::where('user_id', $request->user()->id)->latest('id')->take(10)->get(),
+            'gamReady' => $this->gamReady(),
         ]);
+    }
+
+    private function gamReady(): bool
+    {
+        try {
+            return app(Gam::class)->configured();
+        } catch (Throwable) {
+            return false;
+        }
     }
 
     private function allowed(): void
