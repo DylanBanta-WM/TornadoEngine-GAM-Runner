@@ -16,12 +16,12 @@
     "extra": {
         "tornado": {
             "name": "GAM Runner",
-            "core": ">=0.7",
+            "core": ">=0.21",
             "core-module": false,
             "provider": "TornadoEngine\\GamRunner\\GamRunnerServiceProvider"
         },
         "branch-alias": {
-            "dev-main": "0.3.x-dev"
+            "dev-main": "0.4.x-dev"
         }
     }
 }
