@@ -18,6 +18,7 @@
             "name": "GAM Runner",
             "core": ">=0.21",
             "core-module": false,
+            "suggest": true,
             "provider": "TornadoEngine\\GamRunner\\GamRunnerServiceProvider"
         },
         "branch-alias": {
